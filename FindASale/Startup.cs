@@ -29,6 +29,9 @@ namespace FindASale
             });
 
             services.AddScoped<ISalespersonRepository, SalespersonsRepository>();
+
+            // Add CORS
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
