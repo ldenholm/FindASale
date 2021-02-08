@@ -1,3 +1,4 @@
+using FindASale.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,8 @@ namespace FindASale
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddScoped<ISalespersonRepository, SalespersonsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

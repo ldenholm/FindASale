@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FindASale.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,19 @@ namespace FindASale.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ISalespersonRepository _salesRepo;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, ISalespersonRepository salesRepo)
         {
             _logger = logger;
+            _salesRepo = salesRepo;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            _salesRepo.GetAllSalespersons();
+
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
