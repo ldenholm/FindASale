@@ -9,6 +9,8 @@ namespace FindASale.Services
     public interface IAssignor
     {
         Result AssignSalesperson(CustomerFormDTO dto);
+        Salesperson AssignGreek(CustomerFormDTO dto);
+        Salesperson AssignSpecialist(CustomerFormDTO dto);
         Salesperson ChooseRandom(IEnumerable<Salesperson> list);
     }
     public class Assignor : IAssignor
@@ -31,6 +33,11 @@ namespace FindASale.Services
                     Success = false,
                     ErrorMessage = "All salespeople are busy. Please wait."
                 };
+            }
+
+            if (dto.SpeaksGreek)
+            {
+                return AssignGreek(dto);
             }
 
             // find the car type the customer likes
@@ -67,6 +74,48 @@ namespace FindASale.Services
                     AssignedSalesPerson = salesPersonnel.FirstOrDefault()
                 };
             }
+        }
+
+        public Result AssignGreek(CustomerFormDTO dto)
+        {
+            // get list of greek users, then union with specialist
+            if (_salesRepo.GetGreekSalespersons().Any())
+            {
+                // union with specialist
+                var greekSales = _salesRepo.GetGreekSalespersons();
+
+                if (_salesRepo.UnionGreekAndSpecialist(greekSales).Any())
+                {
+                    // there are match, so return first
+                    return new Result()
+                    {
+                        Success = true,
+                        AssignedSalesPerson = _salesRepo.UnionGreekAndSpecialist(greekSales).FirstOrDefault()
+                    };
+                }
+                else
+                {
+                    return new Result()
+                    {
+                        Success = true,
+                        AssignedSalesPerson = ChooseRandom(greekSales)
+                    };
+                }
+               
+            }
+            else
+            {
+                return new Result()
+                {
+                    Success = false,
+                    ErrorMessage = "All salespeople are busy. Please wait"
+                };
+            }
+        }
+
+        public Salesperson AssignSpecialist(CustomerFormDTO dto)
+        {
+            // Logic to assign specialist
         }
 
         public Salesperson ChooseRandom(IEnumerable<Salesperson> list)
