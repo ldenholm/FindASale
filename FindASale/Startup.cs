@@ -29,7 +29,7 @@ namespace FindASale
             });
 
             services.AddScoped<ISalespersonRepository, SalespersonsRepository>();
-
+            services.AddScoped<IAssignor, Assignor>();
             // Add CORS
             services.AddCors();
         }

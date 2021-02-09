@@ -14,22 +14,20 @@ namespace FindASale.Controllers
     public class SalespersonController : ControllerBase
     {
         private readonly ISalespersonRepository _salesRepo;
+        private readonly IAssignor _assignor;
 
-        public SalespersonController(ISalespersonRepository salesRepo)
+        public SalespersonController(ISalespersonRepository salesRepo, IAssignor assignor)
         {
             _salesRepo = salesRepo;
+            _assignor = assignor;
         }
 
         [HttpPost]
         public Result Assign(CustomerFormDTO form)
         {
-            var list = _salesRepo.LoadSalespersons();
+            //var list = _salesRepo.LoadSalespersons();
 
-            var dto = new Result()
-            {
-                Success = true,
-                AssignedSalesPerson = list.FirstOrDefault()
-            };
+            Result dto = _assignor.AssignSalesperson(form);
 
             return dto;
         }

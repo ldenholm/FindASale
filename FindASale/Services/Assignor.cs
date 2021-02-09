@@ -22,12 +22,6 @@ namespace FindASale.Services
 
         public Result AssignSalesperson(CustomerFormDTO dto)
         {
-            /* Logic to assign a sales person:
-            * If a salesperson is assigned to a customer, that person 
-            * cannot be assigned to another customer at the same time. If there are no salespeople available, 
-            * the application should return a message saying, "All salespeople are busy. Please wait."
-            */
-
             // Check if there are any available personnel
             if (!_salesRepo.GetAllAvailableSalespersons().Any())
             {
@@ -45,11 +39,9 @@ namespace FindASale.Services
             if (dto.SpeaksGreek)
             {
                 // squash list to only include those speaking Greek, if none found assign randomly:
-                var GreekAndSpecialistList = salesPersonnel.Union(_salesRepo.GetGreekSalespersons()).Distinct();
-
-                // if there are none in the union, then plug it through random function
-                if (!GreekAndSpecialistList.Any())
+                if (!_salesRepo.GreekAndSpecialistExists(salesPersonnel))
                 {
+                    // none exists so choose random
                     return new Result()
                     {
                         Success = true,
@@ -58,12 +50,22 @@ namespace FindASale.Services
                 }
                 else
                 {
+                    // there is a specialist who speaks greek so find first result
                     return new Result()
                     {
                         Success = true,
-                        AssignedSalesPerson = GreekAndSpecialistList.FirstOrDefault()
+                        AssignedSalesPerson = _salesRepo.UnionGreekAndSpecialist(salesPersonnel).FirstOrDefault()
                     };
                 }
+            }
+            else
+            {
+                // dont speak greek so return specialist
+                return new Result()
+                {
+                    Success = true,
+                    AssignedSalesPerson = salesPersonnel.FirstOrDefault()
+                };
             }
         }
 
