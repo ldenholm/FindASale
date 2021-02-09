@@ -19,8 +19,8 @@ namespace FindASale.Services
         IEnumerable<Salesperson> GetSportsCarSpecialists();
         IEnumerable<Salesperson> GetTradieSpecialists();
         IEnumerable<Salesperson> SpecialistSwitch(CarType cartype);
-        IEnumerable<Salesperson> UnionGreekAndSpecialist(IEnumerable<Salesperson> specialistList);
-        bool GreekAndSpecialistExists(IEnumerable<Salesperson> specialistList);
+        IEnumerable<Salesperson> UnionGreekAndSpecialist(IEnumerable<Salesperson> greekList, CarType carType);
+        bool GreekAndSpecialistExists(IEnumerable<Salesperson> greekList, CarType carType);
     }
     public class SalespersonsRepository : ISalespersonRepository
     {
@@ -86,15 +86,15 @@ namespace FindASale.Services
             }
         }
 
-        public IEnumerable<Salesperson> UnionGreekAndSpecialist(IEnumerable<Salesperson> specialistList)
+        public IEnumerable<Salesperson> UnionGreekAndSpecialist(IEnumerable<Salesperson> greekList, CarType carType)
         {
-            var combinedList = specialistList.Union(GetGreekSalespersons()).Distinct();
+            var combinedList = greekList.Union(SpecialistSwitch(carType).Distinct());
             return combinedList;
         }
 
-        public bool GreekAndSpecialistExists(IEnumerable<Salesperson> specialistList)
+        public bool GreekAndSpecialistExists(IEnumerable<Salesperson> greekList, CarType carType)
         {
-            var doesExist = specialistList.Union(GetGreekSalespersons()).Distinct().Any();
+            var doesExist = greekList.Union(SpecialistSwitch(carType)).Distinct().Any();
             return doesExist;
         }
     }

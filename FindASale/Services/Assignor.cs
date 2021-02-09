@@ -9,8 +9,8 @@ namespace FindASale.Services
     public interface IAssignor
     {
         Result AssignSalesperson(CustomerFormDTO dto);
-        Salesperson AssignGreek(CustomerFormDTO dto);
-        Salesperson AssignSpecialist(CustomerFormDTO dto);
+        Result AssignGreek(CustomerFormDTO dto);
+        Result AssignSpecialist(CustomerFormDTO dto);
         Salesperson ChooseRandom(IEnumerable<Salesperson> list);
     }
     public class Assignor : IAssignor
@@ -35,87 +35,70 @@ namespace FindASale.Services
                 };
             }
 
-            if (dto.SpeaksGreek)
+            else if (dto.SpeaksGreek)
             {
                 return AssignGreek(dto);
             }
 
-            // find the car type the customer likes
-            var salesPersonnel = _salesRepo.SpecialistSwitch(dto.CarType);
-
-            if (dto.SpeaksGreek)
-            {
-                // squash list to only include those speaking Greek, if none found assign randomly:
-                if (!_salesRepo.GreekAndSpecialistExists(salesPersonnel))
-                {
-                    // none exists so choose random
-                    return new Result()
-                    {
-                        Success = true,
-                        AssignedSalesPerson = ChooseRandom(salesPersonnel)
-                    };
-                }
-                else
-                {
-                    // there is a specialist who speaks greek so find first result
-                    return new Result()
-                    {
-                        Success = true,
-                        AssignedSalesPerson = _salesRepo.UnionGreekAndSpecialist(salesPersonnel).FirstOrDefault()
-                    };
-                }
-            }
             else
             {
-                // dont speak greek so return specialist
-                return new Result()
-                {
-                    Success = true,
-                    AssignedSalesPerson = salesPersonnel.FirstOrDefault()
-                };
+                return AssignSpecialist(dto);
             }
         }
 
         public Result AssignGreek(CustomerFormDTO dto)
         {
-            // get list of greek users, then union with specialist
-            if (_salesRepo.GetGreekSalespersons().Any())
+            if (!_salesRepo.GetGreekSalespersons().Any())
             {
-                // union with specialist
+                return AssignSpecialist(dto);
+            }
+            else
+            {
+                // there are greek salespeople so lets union them with specialist
                 var greekSales = _salesRepo.GetGreekSalespersons();
-
-                if (_salesRepo.UnionGreekAndSpecialist(greekSales).Any())
+                if (!_salesRepo.GreekAndSpecialistExists(greekSales, dto.CarType))
                 {
-                    // there are match, so return first
-                    return new Result()
-                    {
-                        Success = true,
-                        AssignedSalesPerson = _salesRepo.UnionGreekAndSpecialist(greekSales).FirstOrDefault()
-                    };
-                }
-                else
-                {
+                    // choose random
                     return new Result()
                     {
                         Success = true,
                         AssignedSalesPerson = ChooseRandom(greekSales)
                     };
                 }
-               
-            }
-            else
-            {
-                return new Result()
+                else
                 {
-                    Success = false,
-                    ErrorMessage = "All salespeople are busy. Please wait"
-                };
+                    return new Result()
+                    {
+                        Success = true,
+                        AssignedSalesPerson = _salesRepo.UnionGreekAndSpecialist(greekSales, dto.CarType).FirstOrDefault()
+                    };
+                }
+
             }
         }
 
-        public Salesperson AssignSpecialist(CustomerFormDTO dto)
+        public Result AssignSpecialist(CustomerFormDTO dto)
         {
             // Logic to assign specialist
+            if (!_salesRepo.SpecialistSwitch(dto.CarType).Any())
+            {
+                var available = _salesRepo.GetAllAvailableSalespersons();
+                // return random
+                return new Result()
+                {
+                    Success = true,
+                    AssignedSalesPerson = ChooseRandom(available)
+                };
+            }
+            else
+            {
+                var specialists = _salesRepo.SpecialistSwitch(dto.CarType);
+                return new Result()
+                {
+                    Success = true,
+                    AssignedSalesPerson = specialists.FirstOrDefault()
+                };
+            }
         }
 
         public Salesperson ChooseRandom(IEnumerable<Salesperson> list)
