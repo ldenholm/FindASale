@@ -9,6 +9,7 @@ namespace FindASale.Models
     {
         public string Name { get; set; }
         public List<char> Groups { get; set; }
+        public bool IsAvailable { get; set; }
 
         public Salesperson()
         {

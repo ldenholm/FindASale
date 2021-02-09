@@ -5,15 +5,16 @@ using System.Threading.Tasks;
 
 namespace FindASale.Models
 {
-    public class SalespersonDTO
+    public class Result
     {
         public bool Success { get; set; }
         public Salesperson AssignedSalesPerson { get; set; }
-        public Dictionary<int, string> ErrorMessages { get; set; }
+        public string ErrorMessage { get; set; }
+        //public Dictionary<int, string> ErrorMessages { get; set; }
 
-        public SalespersonDTO()
+        public Result()
         {
-            ErrorMessages = new Dictionary<int, string>();
+            //ErrorMessages = new Dictionary<int, string>();
         }
     }
 }

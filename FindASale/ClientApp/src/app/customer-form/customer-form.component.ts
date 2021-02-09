@@ -45,16 +45,3 @@ export class CustomerFormComponent implements OnInit {
     )
   }
 }
-
-//   onSubmit(form: NgForm): void {
-//     console.log(form);
-//     this.service.postForm().subscribe(
-//       res => {
-//         console.log(res);
-//       },
-//       err => {
-//         console.log(err);
-//       }
-//     );
-//   }
-// }

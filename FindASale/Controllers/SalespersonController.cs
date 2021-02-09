@@ -21,11 +21,11 @@ namespace FindASale.Controllers
         }
 
         [HttpPost]
-        public SalespersonDTO Assign(CustomerFormDTO form)
+        public Result Assign(CustomerFormDTO form)
         {
-            var list = _salesRepo.GetAllSalespersons();
+            var list = _salesRepo.LoadSalespersons();
 
-            var dto = new SalespersonDTO()
+            var dto = new Result()
             {
                 Success = true,
                 AssignedSalesPerson = list.FirstOrDefault()

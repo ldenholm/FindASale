@@ -1,34 +1,42 @@
 [
   {
     "Name":"Cierra Vega",
-    "Groups": ["A"]
+    "Groups": [ "A" ],
+    "isAvailable":  false
   },
   {
-    "Name":"Alden Cantrell",
-    "Groups": ["B", "D"]
+    "Name": "Alden Cantrell",
+    "Groups": [ "B", "D" ],
+    "isAvailable": false
   },
   {
-    "Name":"Kierra Gentry",
-    "Groups": ["A", "C"]
+    "Name": "Kierra Gentry",
+    "Groups": [ "A", "C" ],
+    "isAvailable": false
   },
   {
-    "Name":"Pierre Cox",
-    "Groups": ["D"]
+    "Name": "Pierre Cox",
+    "Groups": [ "D" ],
+    "isAvailable": false
   },
   {
-    "Name":"Thomas Crane",
-    "Groups": ["A", "B"]
+    "Name": "Thomas Crane",
+    "Groups": [ "A", "B" ],
+    "isAvailable": false
   },
   {
-    "Name":"Miranda Shaffer",
-    "Groups": ["B"]
+    "Name": "Miranda Shaffer",
+    "Groups": [ "B" ],
+    "isAvailable": false
   },
   {
-    "Name":"Bradyn Kramer",
-    "Groups": ["D"]
+    "Name": "Bradyn Kramer",
+    "Groups": [ "D" ],
+    "isAvailable": false
   },
   {
-    "Name":"Alvaro Mcgee",
-    "Groups": ["A", "D", "C"]
+    "Name": "Alvaro Mcgee",
+    "Groups": [ "A", "D", "C" ],
+    "isAvailable": false
   }
 ]
