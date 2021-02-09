@@ -25,10 +25,8 @@ namespace FindASale.Controllers
         [HttpPost]
         public Result Assign(CustomerFormDTO form)
         {
-            //var list = _salesRepo.LoadSalespersons();
-
             Result dto = _assignor.AssignSalesperson(form);
-
+            // _writer.SetSalespersonToBusy(dto.assignedSalesperson);
             return dto;
         }
     }

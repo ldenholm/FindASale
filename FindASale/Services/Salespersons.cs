@@ -40,7 +40,7 @@ namespace FindASale.Services
 
         public IEnumerable<Salesperson> GetAllAvailableSalespersons()
         {
-            var availablePersonnel = LoadSalespersons().Where(p => p.IsAvailable == true);
+            var availablePersonnel = LoadSalespersons().Where(p => p.IsAvailable = true);
             return availablePersonnel;
         }
 
