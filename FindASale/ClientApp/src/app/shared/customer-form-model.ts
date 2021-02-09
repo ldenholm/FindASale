@@ -1,4 +1,4 @@
 export class CustomerForm {
-    speaksGreek: boolean = false;
-    carInterest: string = "";
+    speaksGreek: boolean;
+    carType: string;
 }

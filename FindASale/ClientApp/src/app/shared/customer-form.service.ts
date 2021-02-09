@@ -10,9 +10,10 @@ export class CustomerFormService {
 
   constructor(private http: HttpClient) { }
 
-  formData: CustomerForm = new CustomerForm();
+  //formData: CustomerForm = new CustomerForm();
 
-  postForm() {
-    return this.http.post('https://localhost:44338/api/Salesperson', this.formData);
+  postForm(formData: CustomerForm) {
+    console.log('inside service: this.formData = ', formData)
+    return this.http.post('https://localhost:44338/api/Salesperson', formData);
   }
 }

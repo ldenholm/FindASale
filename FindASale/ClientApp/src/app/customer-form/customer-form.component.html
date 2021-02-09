@@ -3,7 +3,7 @@
   <p class="lead">Let us find the right salesperson for you</p>
 </div>
 
-<form autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+<form autocomplete="off" [formGroup]="customerForm" (ngSubmit)="onSubmit()">
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">
@@ -13,7 +13,7 @@
             class="form-check-input"
             type="checkbox"
             id="speaksGreek"
-            value="true"
+            formControlName="speaksGreek"
           />
           <label class="form-check-label" for="speaksGreek"
             >Yes/No</label
@@ -22,14 +22,11 @@
       </div>
       <div class="form-group">
         <label for="carSelect">What type of cars are you interested in?</label>
-        <select class="form-control" id="carSelect">
-          <option>Family cars</option>
-          <option>Sports cars</option>
-          <option>Tradie vehicles</option>
-          <option>Not looking for anything in specific</option>
+        <select class="form-control" id="carSelect" formControlName="carType">
+          <option *ngFor="let type of CarTypes" [value]="type">{{type}}</option>
         </select>
       </div>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Find someone</button>
+  <button type="submit" class="btn btn-primary" [disabled]="!customerForm.valid">Find someone</button>
 </form>
