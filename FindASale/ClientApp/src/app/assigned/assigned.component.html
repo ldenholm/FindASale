@@ -1,0 +1,9 @@
+<div *ngIf="!this.data.success">
+    <h4>All salespeople are busy. Please wait.</h4>
+</div>
+<div *ngIf="this.data.success">
+    <h4>Congratulations</h4>
+    <h5>You have been assigned {{this.data.assignedSalesPerson.name}}</h5>
+</div>
+
+<button type="button" class="btn btn-success" (click)="findAnother()">Find another</button>

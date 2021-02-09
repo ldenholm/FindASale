@@ -1,4 +1,5 @@
 ﻿using FindASale.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,10 @@ namespace FindASale.Models
     {
         public bool SpeaksGreek { get; set; }
         public CarType CarType { get; set; }
+        public CustomerFormDTO ConvertJson(string json)
+        {
+            var obj = JsonConvert.DeserializeObject<CustomerFormDTO>(json);
+            return obj;
+        }
     }
 }

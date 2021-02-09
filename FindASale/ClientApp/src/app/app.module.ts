@@ -10,6 +10,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CustomerFormComponent } from './customer-form/customer-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AssignedComponent } from './assigned/assigned.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NavMenuComponent,
     HomeComponent,
     CustomerFormComponent,
+    AssignedComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -24,7 +26,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'findasalesperson', component: CustomerFormComponent }
+      { path: 'findasalesperson', component: CustomerFormComponent },
+      { path: 'assigned', component: AssignedComponent }
     ]),
     BrowserAnimationsModule,
     MatFormFieldModule,

@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 
 import { CustomerFormService } from "../shared/customer-form.service";
+import { Result } from "../shared/result-model";
 
 @Component({
   selector: "app-customer-form",
@@ -19,7 +21,7 @@ export class CustomerFormComponent implements OnInit {
     "Not looking for anything specific",
   ];
 
-  constructor(private fb: FormBuilder, private service: CustomerFormService) {}
+  constructor(private fb: FormBuilder, private service: CustomerFormService, private router: Router) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -36,8 +38,10 @@ export class CustomerFormComponent implements OnInit {
   onSubmit(): void {
     console.log('inside component ', this.customerForm);
     this.service.postForm(this.customerForm.value).subscribe(
-      res => {
+      (res: Result) => {
         console.log(res);
+        this.service.result = res;
+        this.router.navigate(['/assigned']);
       },
       err => {
         console.log(err);
