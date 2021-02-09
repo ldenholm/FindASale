@@ -9,6 +9,7 @@ namespace FindASale.Services
     public interface IAssignor
     {
         Result AssignSalesperson(CustomerFormDTO dto);
+        Salesperson ChooseRandom(IEnumerable<Salesperson> list);
     }
     public class Assignor : IAssignor
     {
@@ -38,14 +39,39 @@ namespace FindASale.Services
                 };
             }
 
-            // Else we have salespeople available, let's see if they speak Greek.
+            // find the car type the customer likes
+            var salesPersonnel = _salesRepo.SpecialistSwitch(dto.CarType);
+
             if (dto.SpeaksGreek)
             {
-                //
-                var options = _salesRepo.GetGreekSalespersons();
+                // squash list to only include those speaking Greek, if none found assign randomly:
+                var GreekAndSpecialistList = salesPersonnel.Union(_salesRepo.GetGreekSalespersons()).Distinct();
+
+                // if there are none in the union, then plug it through random function
+                if (!GreekAndSpecialistList.Any())
+                {
+                    return new Result()
+                    {
+                        Success = true,
+                        AssignedSalesPerson = ChooseRandom(salesPersonnel)
+                    };
+                }
+                else
+                {
+                    return new Result()
+                    {
+                        Success = true,
+                        AssignedSalesPerson = GreekAndSpecialistList.FirstOrDefault()
+                    };
+                }
             }
         }
 
-        
+        public Salesperson ChooseRandom(IEnumerable<Salesperson> list)
+        {
+            Random rand = new Random();
+            int index = rand.Next(0, list.Count() - 1);
+            return list.ElementAt(index);
+        }
     }
 }
