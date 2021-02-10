@@ -15,8 +15,5 @@ namespace FindASale.Models
         {
             Groups = new List<char>();
         }
-
-        // Could potentially leave above prop as List<string> as char 
-        // includes some additional ASCII info when it assigned value from json db
     }
 }

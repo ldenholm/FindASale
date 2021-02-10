@@ -33,8 +33,6 @@ namespace FindASale.Services
         public IEnumerable<Salesperson> GetAllAvailableSalespersons(List<Salesperson> list)
         {
             return list.Where(p => p.IsAvailable == true);
-            //var availablePersonnel = LoadSalespersons().Where(p => p.IsAvailable == true);
-            //return availablePersonnel;
         }
 
         public IEnumerable<Salesperson> GetGreekSalespersons()

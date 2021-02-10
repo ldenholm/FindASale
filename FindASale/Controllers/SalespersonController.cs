@@ -24,11 +24,5 @@ namespace FindASale.Controllers
         {
             return _agent.ProcessAssignment(form);
         }
-
-        //[HttpPost]
-        //public CustomerFormDTO Assign(CustomerFormDTO form)
-        //{
-        //    return form;
-        //}
     }
 }
