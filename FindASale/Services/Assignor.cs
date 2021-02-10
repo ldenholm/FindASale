@@ -28,7 +28,7 @@ namespace FindASale.Services
         public Result AssignSalesperson(CustomerFormDTO dto)
         {
             // Check if there are any available personnel
-            if (!_salesRepo.GetAllAvailableSalespersons().Any())
+            if (!_salesRepo.GetAllAvailableSalespersons(_salesRepo.LoadSalespersons()).Any())
             {
                 // None available, return "All salespeople are busy. Please wait"
                 return new Result()
@@ -76,7 +76,7 @@ namespace FindASale.Services
             if (!_salesRepo.SpecialistsAvailable(groups).Any())
             {
                 // there are no specialists available for the group given, so choose one at random from the available
-                var availableSalesperson = _salesRepo.GetAllAvailableSalespersons();
+                var availableSalesperson = _salesRepo.GetAllAvailableSalespersons(_salesRepo.LoadSalespersons());
                 return new Result()
                 {
                     Success = true,
@@ -118,7 +118,7 @@ namespace FindASale.Services
                 return new Result()
                 {
                     Success = true,
-                    AssignedSalesPerson = ChooseRandom(_salesRepo.GetAllAvailableSalespersons())
+                    AssignedSalesPerson = ChooseRandom(_salesRepo.GetAllAvailableSalespersons(_salesRepo.LoadSalespersons()))
                 };
             }
 

@@ -12,8 +12,7 @@ namespace FindASale.Services
     public interface ISalespersonRepository
     {
         List<Salesperson> LoadSalespersons();
-        Salesperson LoadSalespersonByID(string name);
-        IEnumerable<Salesperson> GetAllAvailableSalespersons();
+        IEnumerable<Salesperson> GetAllAvailableSalespersons(List<Salesperson> list);
         IEnumerable<Salesperson> GetGreekSalespersons();
         IEnumerable<Salesperson> SpecialistsAvailable(List<char> groups);
     }
@@ -31,44 +30,22 @@ namespace FindASale.Services
 
             return list;
         }
-        public Salesperson LoadSalespersonByID(string name)
+        public IEnumerable<Salesperson> GetAllAvailableSalespersons(List<Salesperson> list)
         {
-            var salesperson = LoadSalespersons().Where(p => p.Name == name).FirstOrDefault();
-            return salesperson;
-        }
-        public IEnumerable<Salesperson> GetAllAvailableSalespersons()
-        {
-            var availablePersonnel = LoadSalespersons().Where(p => p.IsAvailable == true);
-            return availablePersonnel;
+            return list.Where(p => p.IsAvailable == true);
+            //var availablePersonnel = LoadSalespersons().Where(p => p.IsAvailable == true);
+            //return availablePersonnel;
         }
 
         public IEnumerable<Salesperson> GetGreekSalespersons()
         {
-            var greekSalespeople = GetAllAvailableSalespersons().Where(p => p.Groups.Contains('A'));
+            var greekSalespeople = GetAllAvailableSalespersons(LoadSalespersons()).Where(p => p.Groups.Contains('A'));
             return greekSalespeople;
-        }
-
-        public IEnumerable<Salesperson> GetSportsCarSpecialists()
-        {
-            var sportsSpecialists = GetAllAvailableSalespersons().Where(p => p.Groups.Contains('B'));
-            return sportsSpecialists;
-        }
-
-        public IEnumerable<Salesperson> GetFamilyCarSpecialists()
-        {
-            var familySpecialists = GetAllAvailableSalespersons().Where(p => p.Groups.Contains('C'));
-            return familySpecialists;
-        }
-
-        public IEnumerable<Salesperson> GetTradieSpecialists()
-        {
-            var tradieSpecialists = GetAllAvailableSalespersons().Where(p => p.Groups.Contains('D'));
-            return tradieSpecialists;
         }
 
         public IEnumerable<Salesperson> SpecialistsAvailable(List<char> groups)
         {
-            return GetAllAvailableSalespersons().Where(p => p.Groups.Contains(groups[0]));
+            return GetAllAvailableSalespersons(LoadSalespersons()).Where(p => p.Groups.Contains(groups[0]));
         }
     }
 }
