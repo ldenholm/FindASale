@@ -25,7 +25,10 @@ namespace FindASale.Services
         public Result ProcessAssignment(CustomerFormDTO formData)
         {
             Result dto = _assignor.AssignSalesperson(formData);
-            _writer.UpdateAvailability(dto.AssignedSalesPerson, false);
+            if (dto.AssignedSalesPerson != null)
+            {
+                _writer.UpdateAvailability(dto.AssignedSalesPerson, false);
+            }
 
             return dto;
         }
