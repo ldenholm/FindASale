@@ -55,3 +55,35 @@ Second Customer speaks Greek and is looking for a Sports car – Assigned to Tho
 Third Customer doesn't speak Greek and is looking for a Sports car – Assigned to Alden Cantrell
 
 ….
+
+# General Notes:
+I have extended the json database to include an isAvailable property to track the availability of salespeople. There is also a button on the site that allows one to reset the availability of all salespeople (this came in handy when testing the application logic and resetting via find/replace was tedious. There is an enum of CarType which was used in my initial design, this enum is no longer used although I have kept it in case the project required extensions. I have also registered Swagger UI so that the endpoints can be clearly seen, to see the this page just navigate to /swagger and the ui will load. Writer service handles all file write operations, whereas Salesperson service is read-based. 
+
+# Deployment Instructions:
+## Front-End Deployment
+- Create environment.prod.ts file to save settings for prod env variables.
+- Build angular application with ng build --prod --base-href /IISAppNameHere/
+  --base-href renames the base href in index.html to: /IISAppNameHere/.
+- Create folder on the deployment server C:\IISAppNameHere, copy contents of the dist folder in there.
+- Create new application in IIS:
+  - Sites => Add Application...
+  - Alias = name of app, Physical path = the directory above (C:\IISAppNameHere), can create dedicated app pool if necessary.
+  - Set up bindings, there will be some configuring of the DNS settings, that will be handled on Azure portal.
+  - Can create a web.config file to redirect all extraneous requests to the app homepage (router in angular handles part of this internally also).
+  
+   ### API Deployment
+ 
+ - In Azure portal go to Create a Resource => Web App.
+ - Create a new resource group for application.
+ - Enter details for app name (blahblah.azurewebsites.net), this takes care of DNS mapping.
+ - Specify runtime stack, for this I'm using .net core 3.1.
+ - OS = Linux or Windows, linux is typically cheaper and often faster.
+ - Region = Aus, or wherever is closest to user base.
+ - Click on change size and select one of the dev/test options for affordability, all the production choices are too spenno.
+ - Double check all choices on the review step, and create.
+ 
+ - Update environment variables in VS and set to Production build.
+ - Open the source code in VS, right click on solution and select Publish.
+ - Choose the publish target just created.
+ - Select the resource group.
+ - If any changes to the target framework must be changed then you can edit them in the publish prompt, however will need to update the web app in Azure.
