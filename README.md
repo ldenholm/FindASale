@@ -56,6 +56,9 @@ Third Customer doesn't speak Greek and is looking for a Sports car – Assigned 
 
 ….
 
+# General Notes:
+I have extended the json database to include an isAvailable property to track the availability of salespeople. There is also a button on the site that allows one to reset the availability of all salespeople (this came in handy when testing the application logic and resetting via find/replace was tedious. There is an enum of CarType which was used in my initial design, this enum is no longer used although I have kept it in case the project required extensions. I have also registered Swagger UI so that the endpoints can be clearly seen, to see the this page just navigate to /swagger and the ui will load. Writer service handles all file write operations, whereas Salesperson service is read-based. 
+
 # Deployment Instructions:
 ## Front-End Deployment
 - Create environment.prod.ts file to save settings for prod env variables.
