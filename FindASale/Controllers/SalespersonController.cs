@@ -19,10 +19,16 @@ namespace FindASale.Controllers
             _agent = agent;
         }
 
+        //[HttpPost]
+        //public Result Assign(CustomerFormDTO form)
+        //{
+        //    return _agent.ProcessAssignment(form);
+        //}
+
         [HttpPost]
-        public Result Assign(CustomerFormDTO form)
+        public CustomerFormDTO Assign(CustomerFormDTO form)
         {
-            return _agent.ProcessAssignment(form);
+            return form;
         }
     }
 }
