@@ -13,21 +13,16 @@ namespace FindASale.Controllers
     [ApiController]
     public class SalespersonController : ControllerBase
     {
-        private readonly ISalespersonRepository _salesRepo;
-        private readonly IAssignor _assignor;
-
-        public SalespersonController(ISalespersonRepository salesRepo, IAssignor assignor)
+        private readonly IAgent _agent;
+        public SalespersonController(IAgent agent)
         {
-            _salesRepo = salesRepo;
-            _assignor = assignor;
+            _agent = agent;
         }
 
         [HttpPost]
         public Result Assign(CustomerFormDTO form)
         {
-            Result dto = _assignor.AssignSalesperson(form);
-            // _writer.SetSalespersonToBusy(dto.assignedSalesperson);
-            return dto;
+            return _agent.ProcessAssignment(form);
         }
     }
 }

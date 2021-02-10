@@ -47,6 +47,8 @@ namespace FindASale
 
             services.AddScoped<ISalespersonRepository, SalespersonsRepository>();
             services.AddScoped<IAssignor, Assignor>();
+            services.AddScoped<IWriter, Writer>();
+            services.AddScoped<IAgent, Agent>();
             // Add CORS
             services.AddCors();
         }

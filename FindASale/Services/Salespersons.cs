@@ -11,8 +11,8 @@ namespace FindASale.Services
 {
     public interface ISalespersonRepository
     {
-        //Task<List<Salesperson>> GetAllSalespersonsAsync();
         List<Salesperson> LoadSalespersons();
+        Salesperson LoadSalespersonByID(string name);
         IEnumerable<Salesperson> GetAllAvailableSalespersons();
         IEnumerable<Salesperson> GetGreekSalespersons();
         IEnumerable<Salesperson> GetFamilyCarSpecialists();
@@ -24,20 +24,23 @@ namespace FindASale.Services
     }
     public class SalespersonsRepository : ISalespersonRepository
     {
-        private readonly string _databasePath;
-        //private SalespersonList _salespersonsList;
+        private readonly string _dbPath;
 
         public SalespersonsRepository()
         {
-            _databasePath = Directory.GetCurrentDirectory() + "\\salesperson.json";
+            _dbPath = Directory.GetCurrentDirectory() + "\\salesperson.json";
         }
         public List<Salesperson> LoadSalespersons()
         {
-            var list = JsonConvert.DeserializeObject<List<Salesperson>>(File.ReadAllText(_databasePath));
+            var list = JsonConvert.DeserializeObject<List<Salesperson>>(File.ReadAllText(_dbPath));
 
             return list;
         }
-
+        public Salesperson LoadSalespersonByID(string name)
+        {
+            var salesperson = LoadSalespersons().Where(p => p.Name == name).FirstOrDefault();
+            return salesperson;
+        }
         public IEnumerable<Salesperson> GetAllAvailableSalespersons()
         {
             var availablePersonnel = LoadSalespersons().Where(p => p.IsAvailable = true);
