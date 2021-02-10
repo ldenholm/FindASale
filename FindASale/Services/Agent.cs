@@ -9,6 +9,7 @@ namespace FindASale.Services
     public interface IAgent
     {
         Result ProcessAssignment(CustomerFormDTO formData);
+        ResetResult ResetAvailability();
     }
     public class Agent : IAgent
     {
@@ -27,6 +28,11 @@ namespace FindASale.Services
             _writer.UpdateAvailability(dto.AssignedSalesPerson, false);
 
             return dto;
+        }
+
+        public ResetResult ResetAvailability()
+        {
+            return _writer.ResetAllToFalse();
         }
     }
 }

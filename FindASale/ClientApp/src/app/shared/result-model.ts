@@ -9,3 +9,7 @@ export class SalesPerson {
     groups: string[];
     isAvailable: boolean;
 }
+
+export class ResetResult {
+    resetMessage: string;
+}

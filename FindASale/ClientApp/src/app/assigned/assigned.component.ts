@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CustomerFormService } from '../shared/customer-form.service';
 
-import { Result } from '../shared/result-model';
+import { ResetResult, Result } from '../shared/result-model';
 
 @Component({
   selector: 'app-assigned',
@@ -11,7 +11,7 @@ import { Result } from '../shared/result-model';
 })
 export class AssignedComponent implements OnInit {
 
-  private data: Result;
+  data: Result;
 
   constructor(private service: CustomerFormService, private router: Router) { }
 
@@ -22,5 +22,17 @@ export class AssignedComponent implements OnInit {
 
   findAnother() {
     this.router.navigate(['findasalesperson']);
+  }
+
+  resetAvailability() {
+    this.service.resetAvailability().subscribe(
+      (res: ResetResult) => {
+        console.log(res);
+        // put in toastr notif
+      },
+      err => {
+        console.log(err);
+      }
+    )
   }
 }

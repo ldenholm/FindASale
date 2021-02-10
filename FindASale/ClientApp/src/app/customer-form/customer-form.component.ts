@@ -39,7 +39,6 @@ export class CustomerFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('inside component ', this.customerForm);
     this.buildGroups();
     this.service.postForm(this.groups).subscribe(
       (res: Result) => {
@@ -51,7 +50,6 @@ export class CustomerFormComponent implements OnInit {
       err => {
         console.log(err);
         this.resetGroups();
-        //this.toastr.error(err, 'Could not assign salesperson');
       }
     )
   }

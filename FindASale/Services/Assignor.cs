@@ -99,14 +99,35 @@ namespace FindASale.Services
             {
                 return HandleSpecialist(groups);
             }
-            else
+
+            // if count of groups NOT greater than 1 look for specialist, otherwise return default
+            if (groups.Count() < 2)
             {
+                // has only 1 group so return default
                 return new Result()
                 {
                     Success = true,
                     AssignedSalesPerson = _salesRepo.GetGreekSalespersons().FirstOrDefault()
                 };
             }
+            // has multiple groups so get greek speaker and specialist
+            // if no specialist that speaks greek
+            if (!_salesRepo.GetGreekSalespersons().Where(p => p.Groups.Contains(groups[1])).Any())
+            {
+                // no specialists found that also speak greek so return random
+                return new Result()
+                {
+                    Success = true,
+                    AssignedSalesPerson = ChooseRandom(_salesRepo.GetAllAvailableSalespersons())
+                };
+            }
+
+            // They want a greek speaker and a specialist, so get list of someone who does both and return first.
+            return new Result()
+            {
+                Success = true,
+                AssignedSalesPerson = _salesRepo.GetGreekSalespersons().Where(p => p.Groups.Contains(groups[1])).FirstOrDefault()
+            };
         }
 
         public Salesperson ChooseRandom(IEnumerable<Salesperson> list)

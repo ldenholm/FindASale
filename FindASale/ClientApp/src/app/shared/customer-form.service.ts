@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { CustomerForm } from './customer-form-model';
+
 import { Result } from './result-model';
 import { GroupDTO } from './group-model';
 
@@ -21,5 +21,9 @@ export class CustomerFormService {
     this.GroupsDTO.Groups = formData;
     console.log('inside service: this.formData = ', this.GroupsDTO)
     return this.http.post('https://localhost:44338/api/Salesperson', this.GroupsDTO);
+  }
+
+  resetAvailability() {
+    return this.http.get('https://localhost:44338/api/ResetAvailability');
   }
 }

@@ -17,4 +17,9 @@ namespace FindASale.Models
             //ErrorMessages = new Dictionary<int, string>();
         }
     }
+
+    public class ResetResult
+    {
+        public string ResetMessage { get; set; }
+    }
 }

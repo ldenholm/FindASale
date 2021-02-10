@@ -11,24 +11,18 @@ namespace FindASale.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SalespersonController : ControllerBase
+    public class ResetAvailability : ControllerBase
     {
         private readonly IAgent _agent;
-        public SalespersonController(IAgent agent)
+        public ResetAvailability(IAgent agent)
         {
             _agent = agent;
         }
 
-        [HttpPost]
-        public Result Assign(CustomerFormDTO form)
+        [HttpGet]
+        public ResetResult TriggerResetAvailability()
         {
-            return _agent.ProcessAssignment(form);
+            return _agent.ResetAvailability();
         }
-
-        //[HttpPost]
-        //public CustomerFormDTO Assign(CustomerFormDTO form)
-        //{
-        //    return form;
-        //}
     }
 }

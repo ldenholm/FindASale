@@ -11,6 +11,7 @@ namespace FindASale.Services
     public interface IWriter
     {
         void UpdateAvailability(Salesperson person, bool isAvailable);
+        ResetResult ResetAllToFalse();
     }
     public class Writer : IWriter
     {
@@ -36,6 +37,36 @@ namespace FindASale.Services
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, salespersonList);
             }
+        }
+        public ResetResult ResetAllToFalse()
+        {
+            try
+            {
+                // reset availability of all salespersons to true
+
+                var list = _salesRepo.LoadSalespersons();
+
+                list.ForEach(p => p.IsAvailable = true);
+
+                using (StreamWriter file = File.CreateText(_dbPath))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(file, list);
+                }
+                return new ResetResult()
+                {
+                    ResetMessage = "Reset Successful"
+                };
+            }
+
+            catch (Exception e)
+            {
+                return new ResetResult()
+                {
+                    ResetMessage = e.Message
+                };
+            }
+
         }
     }
 }
