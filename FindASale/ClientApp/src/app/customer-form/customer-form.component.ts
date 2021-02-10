@@ -1,8 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 
+//import { ToastrService } from 'ngx-toastr';
+
 import { CustomerFormService } from "../shared/customer-form.service";
+import { Group } from "../shared/group-model";
 import { Result } from "../shared/result-model";
 
 @Component({
@@ -12,16 +15,16 @@ import { Result } from "../shared/result-model";
 })
 export class CustomerFormComponent implements OnInit {
   customerForm: FormGroup;
+  groups: string[] = [];
 
-  // Car Types
-  CarTypes: any = [
-    "Family cars",
-    "Sports cars",
-    "Tradie vehicles",
-    "Not looking for anything specific",
-  ];
+  CarTypes: Group[] = [
+    {name: "Sports cars", symbol: 'B'},
+    {name: "Family cars", symbol: 'C'},
+    {name: "Tradie vehicles", symbol: 'D'},
+    {name: "Not looking for anything specific", symbol: null}
+  ]
 
-  constructor(private fb: FormBuilder, private service: CustomerFormService, private router: Router) {}
+  constructor(private fb: FormBuilder, private service: CustomerFormService, private router: Router, /*private toastr: ToastrService*/) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -37,15 +40,32 @@ export class CustomerFormComponent implements OnInit {
 
   onSubmit(): void {
     console.log('inside component ', this.customerForm);
-    this.service.postForm(this.customerForm.value).subscribe(
+    this.buildGroups();
+    this.service.postForm(this.groups).subscribe(
       (res: Result) => {
         console.log(res);
         this.service.result = res;
+        this.resetGroups();
         this.router.navigate(['/assigned']);
       },
       err => {
         console.log(err);
+        this.resetGroups();
+        //this.toastr.error(err, 'Could not assign salesperson');
       }
     )
+  }
+
+  buildGroups() {
+    if (this.customerForm.controls['speaksGreek'].value) {
+      this.groups.push('A');
+    }
+    this.groups.push(this.customerForm.controls['carType'].value);
+
+    console.log('inside buildGroups func ', this.groups)
+  }
+
+  resetGroups() {
+    this.groups = [];
   }
 }

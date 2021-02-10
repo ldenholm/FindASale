@@ -9,12 +9,15 @@ namespace FindASale.Models
 {
     public class CustomerFormDTO
     {
-        public bool SpeaksGreek { get; set; }
-        public CarType CarType { get; set; }
+        //public bool SpeaksGreek { get; set; }
+        //public List<char> Groups { get; set; }
+        public List<char> Groups { get; set; }
         public CustomerFormDTO ConvertJson(string json)
         {
             var obj = JsonConvert.DeserializeObject<CustomerFormDTO>(json);
             return obj;
         }
     }
+
+    public class Test
 }

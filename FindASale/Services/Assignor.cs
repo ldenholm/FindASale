@@ -9,8 +9,11 @@ namespace FindASale.Services
     public interface IAssignor
     {
         Result AssignSalesperson(CustomerFormDTO dto);
-        Result AssignGreek(CustomerFormDTO dto);
-        Result AssignSpecialist(CustomerFormDTO dto);
+        //Result AssignGreek(CustomerFormDTO dto);
+        //Result AssignSpecialist(CustomerFormDTO dto);
+        Result AllocateSalesperson(List<char> groups);
+        Result HandleSpecialist(List<char> groups);
+        Result HandleGreekSpeaker(List<char> groups);
         Salesperson ChooseRandom(IEnumerable<Salesperson> list);
     }
     public class Assignor : IAssignor
@@ -35,68 +38,73 @@ namespace FindASale.Services
                 };
             }
 
-            else if (dto.SpeaksGreek)
+            else if (dto.Groups.Count == 0)
             {
-                return AssignGreek(dto);
-            }
-
-            else
-            {
-                return AssignSpecialist(dto);
-            }
-        }
-
-        public Result AssignGreek(CustomerFormDTO dto)
-        {
-            if (!_salesRepo.GetGreekSalespersons().Any())
-            {
-                return AssignSpecialist(dto);
-            }
-            else
-            {
-                // there are greek salespeople so lets union them with specialist
-                var greekSales = _salesRepo.GetGreekSalespersons();
-                if (!_salesRepo.GreekAndSpecialistExists(greekSales, dto.CarType))
-                {
-                    // choose random
-                    return new Result()
-                    {
-                        Success = true,
-                        AssignedSalesPerson = ChooseRandom(greekSales)
-                    };
-                }
-                else
-                {
-                    return new Result()
-                    {
-                        Success = true,
-                        AssignedSalesPerson = _salesRepo.UnionGreekAndSpecialist(greekSales, dto.CarType).FirstOrDefault()
-                    };
-                }
-
-            }
-        }
-
-        public Result AssignSpecialist(CustomerFormDTO dto)
-        {
-            // Logic to assign specialist
-            if (!_salesRepo.SpecialistSwitch(dto.CarType).Any())
-            {
-                var available = _salesRepo.GetAllAvailableSalespersons();
-                // return random
+                // No groups so pick one at random
+                var availablePerson = _salesRepo.LoadSalespersons();
                 return new Result()
                 {
                     Success = true,
-                    AssignedSalesPerson = ChooseRandom(available)
+                    AssignedSalesPerson = ChooseRandom(availablePerson)
+                };
+            }
+
+            else
+            {
+                // pass groups into function to find best salesperson
+                return AllocateSalesperson(dto.Groups);
+            }
+        }
+
+        public Result AllocateSalesperson(List<char> groups)
+        {
+            // see if char does not contain A speaking greek
+            if (!groups.Contains('A'))
+            {
+                return HandleSpecialist(groups);
+            }
+
+            else
+            {
+                return HandleGreekSpeaker(groups);
+            }
+        }
+
+        public Result HandleSpecialist(List<char> groups)
+        {
+            // use sales repo to find available specialist of that group, if none found choose at random
+            if (!_salesRepo.SpecialistsAvailable(groups).Any())
+            {
+                // there are no specialists available for the group given, so choose one at random from the available
+                var availableSalesperson = _salesRepo.GetAllAvailableSalespersons();
+                return new Result()
+                {
+                    Success = true,
+                    AssignedSalesPerson = ChooseRandom(availableSalesperson)
                 };
             }
             else
             {
-                var specialists = _salesRepo.SpecialistSwitch(dto.CarType);
                 return new Result()
                 {
                     Success = true,
-                    AssignedSalesPerson = specialists.FirstOrDefault()
+                    AssignedSalesPerson = _salesRepo.SpecialistsAvailable(groups).FirstOrDefault()
+                };
+            }
+        }
+
+        public Result HandleGreekSpeaker(List<char> groups)
+        {
+            if (!_salesRepo.GetGreekSalespersons().Any())
+            {
+                return HandleSpecialist(groups);
+            }
+            else
+            {
+                return new Result()
+                {
+                    Success = true,
+                    AssignedSalesPerson = _salesRepo.GetGreekSalespersons().FirstOrDefault()
                 };
             }
         }

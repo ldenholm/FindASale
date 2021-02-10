@@ -15,12 +15,7 @@ namespace FindASale.Services
         Salesperson LoadSalespersonByID(string name);
         IEnumerable<Salesperson> GetAllAvailableSalespersons();
         IEnumerable<Salesperson> GetGreekSalespersons();
-        IEnumerable<Salesperson> GetFamilyCarSpecialists();
-        IEnumerable<Salesperson> GetSportsCarSpecialists();
-        IEnumerable<Salesperson> GetTradieSpecialists();
-        IEnumerable<Salesperson> SpecialistSwitch(CarType cartype);
-        IEnumerable<Salesperson> UnionGreekAndSpecialist(IEnumerable<Salesperson> greekList, CarType carType);
-        bool GreekAndSpecialistExists(IEnumerable<Salesperson> greekList, CarType carType);
+        IEnumerable<Salesperson> SpecialistsAvailable(List<char> groups);
     }
     public class SalespersonsRepository : ISalespersonRepository
     {
@@ -71,34 +66,9 @@ namespace FindASale.Services
             return tradieSpecialists;
         }
 
-        public IEnumerable<Salesperson> SpecialistSwitch(CarType carType)
+        public IEnumerable<Salesperson> SpecialistsAvailable(List<char> groups)
         {
-            switch (carType)
-            {
-                case CarType.FamilyCars:
-                    return GetFamilyCarSpecialists();
-
-                case CarType.SportsCars:
-                    return GetSportsCarSpecialists();
-
-                case CarType.TradieVehicles:
-                    return GetTradieSpecialists();
-
-                default:
-                    return GetAllAvailableSalespersons();
-            }
-        }
-
-        public IEnumerable<Salesperson> UnionGreekAndSpecialist(IEnumerable<Salesperson> greekList, CarType carType)
-        {
-            var combinedList = greekList.Union(SpecialistSwitch(carType).Distinct());
-            return combinedList;
-        }
-
-        public bool GreekAndSpecialistExists(IEnumerable<Salesperson> greekList, CarType carType)
-        {
-            var doesExist = greekList.Union(SpecialistSwitch(carType)).Distinct().Any();
-            return doesExist;
+            return GetAllAvailableSalespersons().Where(p => p.Groups.Contains(groups[0]));
         }
     }
 }

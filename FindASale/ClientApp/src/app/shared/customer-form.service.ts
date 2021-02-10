@@ -14,7 +14,7 @@ export class CustomerFormService {
   // object to hold the response in:
   result: Result = new Result();
 
-  postForm(formData: CustomerForm) {
+  postForm(formData: string[]) {
     console.log('inside service: this.formData = ', formData)
     return this.http.post('https://localhost:44338/api/Salesperson', formData);
   }

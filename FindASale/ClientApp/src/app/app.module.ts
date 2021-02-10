@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { MatFormFieldModule, MatCardModule, MatCheckboxModule, MatSelectModule } from '@angular/material';
+
+//import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -29,16 +30,8 @@ import { AssignedComponent } from './assigned/assigned.component';
       { path: 'findasalesperson', component: CustomerFormComponent },
       { path: 'assigned', component: AssignedComponent }
     ]),
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatSelectModule
-  ],
-  exports: [
-    MatCheckboxModule,
-    MatCardModule,
-    MatSelectModule
+    BrowserAnimationsModule
+    //ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
