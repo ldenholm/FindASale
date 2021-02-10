@@ -12,4 +12,10 @@ namespace FindASale.Enums
         TradieVehicles,
         Unspecified
     }
+
+    /*
+     * This enum is no longer used, although I have left it in, if there was
+     * ever a need to extend the project this could become useful, for example
+     * when handling the car types for different operations.
+     */
 }

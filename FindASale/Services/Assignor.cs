@@ -9,8 +9,6 @@ namespace FindASale.Services
     public interface IAssignor
     {
         Result AssignSalesperson(CustomerFormDTO dto);
-        //Result AssignGreek(CustomerFormDTO dto);
-        //Result AssignSpecialist(CustomerFormDTO dto);
         Result AllocateSalesperson(List<char> groups);
         Result HandleSpecialist(List<char> groups);
         Result HandleGreekSpeaker(List<char> groups);
